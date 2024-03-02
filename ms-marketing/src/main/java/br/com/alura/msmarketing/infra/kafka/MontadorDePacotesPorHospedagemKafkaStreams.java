@@ -4,26 +4,23 @@ import br.com.alura.msmarketing.dominio.Hospedagem;
 import br.com.alura.msmarketing.dominio.Pacote;
 import br.com.alura.msmarketing.dominio.PacotesPorHospedagem;
 import org.apache.kafka.common.serialization.Serde;
-import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Grouped;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Produced;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import java.util.Properties;
-
-import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.common.serialization.Serdes.String;
 import static org.apache.kafka.common.serialization.Serdes.serdeFrom;
-import static org.apache.kafka.streams.StreamsConfig.*;
 import static org.apache.kafka.streams.kstream.Consumed.with;
 
 @Configuration
+@EnableKafkaStreams
 class MontadorDePacotesPorHospedagemKafkaStreams {
 
     @Value("${spring.kafka.bootstrap-servers}")
@@ -41,21 +38,22 @@ class MontadorDePacotesPorHospedagemKafkaStreams {
     @Value("${application.id.config}")
     private String idDaAplicacao;
     
-    @Bean
-    KafkaStreams kafkaStreams(){
-        KafkaStreams kafkaStreams = new KafkaStreams(getStream().build(), getStreamsConfiguration());
+//    @Bean
+//    KafkaStreams kafkaStreams(){
+//        KafkaStreams kafkaStreams = new KafkaStreams(getStream().build(), getStreamsConfiguration());
+//
+//        kafkaStreams.cleanUp();
+//
+//        kafkaStreams.start();
+//
+//        Runtime.getRuntime().addShutdownHook(new Thread(kafkaStreams::close));
+//
+//        return kafkaStreams;
+//    }
 
-        kafkaStreams.cleanUp();
-        
-        kafkaStreams.start();
-        
-        Runtime.getRuntime().addShutdownHook(new Thread(kafkaStreams::close));
-
-        return kafkaStreams;
-    }
-
-    private StreamsBuilder getStream(){
-        StreamsBuilder builder = new StreamsBuilder();
+    @Autowired
+    void getStream(StreamsBuilder builder){
+        //StreamsBuilder builder = new StreamsBuilder();
         Serde<Hospedagem> serdeHospedagemEvent = serdeFrom(new JsonSerializer<>(), jsonDeserializer(Hospedagem.class));
         Serde<Pacote> serdePacoteEvent = serdeFrom(new JsonSerializer<>(), jsonDeserializer(Pacote.class));
         Serde<PacotesPorHospedagem> serdePacotesPorHospedagemEvent = serdeFrom(new JsonSerializer<>(), jsonDeserializer(PacotesPorHospedagem.class));
@@ -73,21 +71,19 @@ class MontadorDePacotesPorHospedagemKafkaStreams {
                 .reduce((p1, p2) -> new PacotesPorHospedagem(p1.hospedagem(), p1.valorTotal().add(p2.valorTotal())))
                 .toStream()
                 .to(topicoDePacotesPorHospedagem, Produced.with(String(), serdePacotesPorHospedagemEvent));
-
-        return builder;
     }
     
 	private <T> JsonDeserializer<T> jsonDeserializer(Class<T> clazz){
 		return new JsonDeserializer<T>(clazz, false);
 	}
 
-    private Properties getStreamsConfiguration() {
-        Properties streamsConfiguration = new Properties();
-        streamsConfiguration.put(APPLICATION_ID_CONFIG, idDaAplicacao);
-        streamsConfiguration.put(BOOTSTRAP_SERVERS_CONFIG, kafkaServerUrl);
-        streamsConfiguration.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, String().getClass().getName());
-        streamsConfiguration.put(COMMIT_INTERVAL_MS_CONFIG, "1");
-
-        return streamsConfiguration;
-    }
+//    private Properties getStreamsConfiguration() {
+//        Properties streamsConfiguration = new Properties();
+//        streamsConfiguration.put(APPLICATION_ID_CONFIG, idDaAplicacao);
+//        streamsConfiguration.put(BOOTSTRAP_SERVERS_CONFIG, kafkaServerUrl);
+//        streamsConfiguration.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, String().getClass().getName());
+//        streamsConfiguration.put(COMMIT_INTERVAL_MS_CONFIG, "1");
+//
+//        return streamsConfiguration;
+//    }
 }

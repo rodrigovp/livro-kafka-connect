@@ -5,10 +5,12 @@ import br.com.alura.mspesquisa.dominio.IdentificadorCompanhiaAerea;
 import br.com.alura.mspesquisa.dominio.Voo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@EqualsAndHashCode
 public class VooCriadoEvent {
 
     @JsonProperty("_id")

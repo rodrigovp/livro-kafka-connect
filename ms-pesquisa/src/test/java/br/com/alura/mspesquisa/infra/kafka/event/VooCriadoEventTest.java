@@ -4,6 +4,8 @@ import br.com.alura.mspesquisa.dominio.Destino;
 import br.com.alura.mspesquisa.dominio.IdentificadorCompanhiaAerea;
 import br.com.alura.mspesquisa.dominio.Origem;
 import br.com.alura.mspesquisa.dominio.Preco;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -28,5 +30,15 @@ class VooCriadoEventTest {
                 .hasFieldOrPropertyWithValue("destino", new Destino(SDU, localDateTimeOf("2024-08-14T20:38:39")))
                 .hasFieldOrPropertyWithValue("companhiaAerea", GOL)
                 .hasFieldOrPropertyWithValue("preco", new Preco(new BigDecimal("1000.00"), new BigDecimal("500.00")));
+    }
+
+    @Test
+    void converterParaJson() throws JsonProcessingException {
+        var objectMapper = new ObjectMapper();
+
+        var vooCriadoEventJson = objectMapper.writeValueAsString(vooCriadoEvent());
+        var vooCriadoEventObtido = objectMapper.readValue(vooCriadoEventJson, VooCriadoEvent.class);
+
+        assertThat(vooCriadoEventObtido).isEqualTo(vooCriadoEvent());
     }
 }

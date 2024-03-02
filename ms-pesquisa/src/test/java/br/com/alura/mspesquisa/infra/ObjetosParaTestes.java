@@ -15,6 +15,7 @@ import static br.com.alura.mspesquisa.dominio.Aeroporto.CGH;
 import static br.com.alura.mspesquisa.dominio.Aeroporto.SDU;
 import static br.com.alura.mspesquisa.dominio.CompanhiaAerea.AZUL;
 import static br.com.alura.mspesquisa.dominio.DateUtils.localDateTimeOf;
+import static java.util.UUID.randomUUID;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 public class ObjetosParaTestes {
@@ -22,6 +23,7 @@ public class ObjetosParaTestes {
     public static final VooCriadoEvent vooCriadoEvent(){
         val objectMapper = new ObjectMapper();
         var vooCriadoEvent = new VooCriadoEvent();
+
         try {
             vooCriadoEvent = objectMapper.readValue(new File("src/test/resources/voo-criado-event.json"), VooCriadoEvent.class);
         } catch (IOException e) {
@@ -38,6 +40,11 @@ public class ObjetosParaTestes {
                 AZUL,
                 new Preco(new BigDecimal("1000.00"), new BigDecimal("500.00"))
         );
+    }
+    
+    public static final IdentificadorCompanhiaAerea identificadorCompanhiaAerea() {
+    	var uuidString = randomUUID().toString().replaceAll("-", "");
+    	return new IdentificadorCompanhiaAerea(uuidString);
     }
 
     public static final VooSelecionadoDTO fabricar(int adultos, int criancas, String idCompanhiaAerea, String cpf){

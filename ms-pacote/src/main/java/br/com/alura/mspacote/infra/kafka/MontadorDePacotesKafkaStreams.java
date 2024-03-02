@@ -4,28 +4,26 @@ import br.com.alura.mspacote.dominio.HospedagemSelecionada;
 import br.com.alura.mspacote.dominio.Pacote;
 import br.com.alura.mspacote.dominio.VooSelecionado;
 import org.apache.kafka.common.serialization.Serde;
-import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.JoinWindows;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Produced;
 import org.apache.kafka.streams.kstream.StreamJoined;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.time.Duration;
-import java.util.Properties;
 
-import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.common.serialization.Serdes.String;
 import static org.apache.kafka.common.serialization.Serdes.serdeFrom;
-import static org.apache.kafka.streams.StreamsConfig.*;
 import static org.apache.kafka.streams.kstream.Consumed.with;
 
 @Configuration
+@EnableKafkaStreams
 class MontadorDePacotesKafkaStreams {
 
     @Value("${spring.kafka.bootstrap-servers}")
@@ -43,21 +41,22 @@ class MontadorDePacotesKafkaStreams {
     @Value("${application.id.config}")
     private String idDaAplicacao;
     
-    @Bean
-    KafkaStreams kafkaStreams(){
-        KafkaStreams kafkaStreams = new KafkaStreams(getStream().build(), getStreamsConfiguration());
-
-        kafkaStreams.cleanUp();
-        
-        kafkaStreams.start();
-        
-        Runtime.getRuntime().addShutdownHook(new Thread(kafkaStreams::close));
-
-        return kafkaStreams;
-    }
+//    @Bean
+//    KafkaStreams kafkaStreams(StreamsBuilder builder){
+//        KafkaStreams kafkaStreams = new KafkaStreams(getStream(builder).build(), getStreamsConfiguration());
+//
+//        //kafkaStreams.cleanUp();
+//        
+//        kafkaStreams.start();
+//        
+//        Runtime.getRuntime().addShutdownHook(new Thread(kafkaStreams::close));
+//
+//        return kafkaStreams;
+//    }
     
-    private StreamsBuilder getStream() {
-        StreamsBuilder builder = new StreamsBuilder();
+    @Autowired
+    void getStream(StreamsBuilder builder) {
+        //StreamsBuilder builder = new StreamsBuilder();
 
         Serde<VooSelecionado> serdeVooSelecionadoEvent =
                 serdeFrom(new JsonSerializer<>(), new JsonDeserializer<>(VooSelecionado.class));
@@ -79,17 +78,16 @@ class MontadorDePacotesKafkaStreams {
                         StreamJoined.with(String(), serdeVooSelecionadoEvent, serdeHospedagemSelecionadaEvent)
                 )
                 .to(topicoDePacotesCriados, Produced.with(String(), serdePacoteEvent));
-
-        return builder;
     }
 
-    private Properties getStreamsConfiguration() {
-        Properties streamsConfiguration = new Properties();
-        streamsConfiguration.put(APPLICATION_ID_CONFIG, idDaAplicacao);
-        streamsConfiguration.put(BOOTSTRAP_SERVERS_CONFIG, kafkaServerUrl);
-        streamsConfiguration.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, String().getClass().getName());
-        streamsConfiguration.put(COMMIT_INTERVAL_MS_CONFIG, "1");
-
-        return streamsConfiguration;
-    }
+//    @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
+//    KafkaStreamsConfiguration getStreamsConfiguration() {
+//        Map<String, Object> streamsConfiguration = new HashMap<>();
+//        streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, idDaAplicacao);
+//        streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServerUrl);
+//        streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, String().getClass().getName());
+//        streamsConfiguration.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, "1");
+//
+//        return new KafkaStreamsConfiguration(streamsConfiguration);
+//    }
 }

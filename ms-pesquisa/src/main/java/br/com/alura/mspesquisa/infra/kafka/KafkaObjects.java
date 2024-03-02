@@ -19,7 +19,7 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 
 @Configuration
-public class KafkaObjects {
+class KafkaObjects {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String kafkaServerUrl;
@@ -48,7 +48,7 @@ public class KafkaObjects {
         return new JsonDeserializer<T>(clazz, false);
     }
 
-    public Map<String, Object> consumerConfigs(Class<?> ... clazz) {
+    private Map<String, Object> consumerConfigs(Class<?> ... clazz) {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetReset);

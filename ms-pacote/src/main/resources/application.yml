@@ -2,6 +2,7 @@ server.port: 8083
 application.id.config: ms-pacote
 
 spring:
+  application.name: ms-pacote
   kafka:
     bootstrap-servers: localhost:9092
     group_id: ms-pacote

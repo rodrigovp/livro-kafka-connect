@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @KafkaListener(topics = "${topico.voos.nome}",
         groupId = "${spring.kafka.group_id}",
         containerFactory = "voosKafkaListener")
-public class ReceptorDeVoos {
+class ReceptorDeVoos {
 
     private RepositorioDeNovosVoos repositorioDeNovosVoos;
 

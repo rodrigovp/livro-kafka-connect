@@ -14,4 +14,8 @@ public record Pacote(VooSelecionado voo, HospedagemSelecionada hospedagem) {
 	public String cnpjHospedagem() {
 		return hospedagem.cnpj();
 	}
+
+	public String cpfComprador() {
+		return voo.cpf();
+	}
 }
