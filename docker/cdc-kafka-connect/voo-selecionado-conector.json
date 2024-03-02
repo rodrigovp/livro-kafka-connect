@@ -1,0 +1,16 @@
+{
+    "name": "voo-selecionado-conector",
+    "config": {
+        "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+        "database.hostname": "mysql",
+        "database.port": "3306",
+        "database.user": "root",
+        "database.server.id": "1234",
+        "database.include.list": "pesquisa",
+        "table.include.list": "pesquisa.voos_selecionados",
+        "skipped.operations": "u,d,t",
+        "schema.history.internal.kafka.bootstrap.servers": "kafka:29092",
+        "schema.history.internal.kafka.topic": "ms-pesquisa-schemahistory",
+        "topic.prefix": "ms-pesquisa"
+    }
+}

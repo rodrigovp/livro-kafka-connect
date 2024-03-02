@@ -2,13 +2,13 @@
 	"info": {
 		"_postman_id": "e15f34ec-2bce-4e54-9672-d6b4f0c9e890",
 		"name": "livro-kafka",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "2004722",
 		"_collection_link": "https://crimson-zodiac-778758.postman.co/workspace/Alura-Bank~e04b7ac4-1ac1-4c12-9151-66aae393d95c/collection/2004722-e15f34ec-2bce-4e54-9672-d6b4f0c9e890?action=share&source=collection_link&creator=2004722"
 	},
 	"item": [
 		{
-			"name": "cadastrar novo voo",
+			"name": "ms-companhias-aereas: cadastrar novo voo",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -21,37 +21,67 @@
 						}
 					}
 				},
+				"url": "http://localhost:8080/voos"
+			},
+			"response": []
+		},
+		{
+			"name": "ms-companhias-aereas: exclusao-voo",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/voos/65297ed743167329aff74184"
+			},
+			"response": []
+		},
+		{
+			"name": "ms-pesquisa: listar voos",
+			"request": {
+				"method": "GET",
+				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/voos",
+					"raw": "http://localhost:8081/voos?nome_origem=CGH&data_origem=2024-08-21&nome_destino=SDU",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"voos"
+					],
+					"query": [
+						{
+							"key": "nome_origem",
+							"value": "CGH"
+						},
+						{
+							"key": "data_origem",
+							"value": "2024-08-21"
+						},
+						{
+							"key": "nome_destino",
+							"value": "SDU"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "New Request",
+			"name": "ms-pesquisa: selecionar vôo",
 			"request": {
-				"method": "DELETE",
+				"method": "POST",
 				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/voos/64fc9b032c8ffa0d262f3ac8",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"voos",
-						"64fc9b032c8ffa0d262f3ac8"
-					]
-				}
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"idCompanhiaAerea\": \"65136e3571e71b6bcc8b3027\",\n    \"adultos\": 1,\n    \"criancas\": 2,\n    \"cpfComprador\": \"75625404704\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/voos-selecionados"
 			},
 			"response": []
 		}

@@ -1,4 +1,4 @@
-package br.com.alura.mspesquisa.infra;
+package br.com.alura.mspesquisa.infra.kafka;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

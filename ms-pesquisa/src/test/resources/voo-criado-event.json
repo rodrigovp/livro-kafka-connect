@@ -1,0 +1,17 @@
+{
+  "_id":"65136e3571e71b6bcc8b3021",
+  "origem":{
+    "aeroporto":"CGH",
+    "partida":1723671519000
+  },
+  "destino":{
+    "aeroporto":"SDU",
+    "chegada":1723678719000
+  },
+  "companhiaAerea":"GOL",
+  "preco":{
+    "adulto":"1000.00",
+    "crianca":"500.00"
+  },
+  "_class":"br.com.alura.mscompanhiasaereas.dominio.Voo"
+}

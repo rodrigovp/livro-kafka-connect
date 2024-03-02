@@ -33,7 +33,6 @@ class VooControllerTest {
         var vooDto = vooDtoDeSaoPauloAoRioAmanha();
         var voo = vooDto.toVoo();
         var vooDtoJson = toJson(vooDto);
-        System.out.println(vooDtoJson);
 
         when(service.cadastrarNovo(voo)).thenReturn("id");
         mockMvc.perform(post("/voos")

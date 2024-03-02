@@ -1,3 +1,7 @@
+server.port: 8081
+
+carga-inicial-banco.enabled: true
+
 spring:
   kafka:
     bootstrap-servers: localhost:9092
