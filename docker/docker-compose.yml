@@ -104,9 +104,9 @@ services:
               echo -e 'Aguardando Kafka subir com sucesso...'
               kafka-topics --bootstrap-server kafka:29092 --list 
 
-              kafka-topics --create --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic ms-companhias-aereas.livro-kafka.voos
-              kafka-topics --create --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic ms-pesquisa.pesquisa.voos_selecionados
-              kafka-topics --create --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic ms-hospedagens.public.hospedagens_selecionadas
+              kafka-topics --create --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic voos.novos
+              kafka-topics --create --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic voos.selecionados
+              kafka-topics --create --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic hospedagens.selecionadas
           
               echo -e 'Criados os seguintes topicos com sucesso:'
               kafka-topics --bootstrap-server kafka:29092 --list

@@ -15,4 +15,4 @@ spring:
     hibernate.ddl-auto: update
     show-sql: true
 
-topico.voos.nome: ms-companhias-aereas.livro-kafka.voos
+topico.voos.nome: voos.novos
