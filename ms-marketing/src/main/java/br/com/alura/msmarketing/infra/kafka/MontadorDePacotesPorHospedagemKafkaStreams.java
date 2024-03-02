@@ -54,6 +54,9 @@ class MontadorDePacotesPorHospedagemKafkaStreams {
     @Autowired
     void getStream(StreamsBuilder builder){
         //StreamsBuilder builder = new StreamsBuilder();
+
+        exibirLocalizacaoDoRocksDB();
+
         Serde<Hospedagem> serdeHospedagemEvent = serdeFrom(new JsonSerializer<>(), jsonDeserializer(Hospedagem.class));
         Serde<Pacote> serdePacoteEvent = serdeFrom(new JsonSerializer<>(), jsonDeserializer(Pacote.class));
         Serde<PacotesPorHospedagem> serdePacotesPorHospedagemEvent = serdeFrom(new JsonSerializer<>(), jsonDeserializer(PacotesPorHospedagem.class));
@@ -72,8 +75,12 @@ class MontadorDePacotesPorHospedagemKafkaStreams {
                 .toStream()
                 .to(topicoDePacotesPorHospedagem, Produced.with(String(), serdePacotesPorHospedagemEvent));
     }
-    
-	private <T> JsonDeserializer<T> jsonDeserializer(Class<T> clazz){
+
+    private void exibirLocalizacaoDoRocksDB() {
+        System.out.printf("Localização do RocksDB: %skafka-streams\n", System.getProperty("java.io.tmpdir"));
+    }
+
+    private <T> JsonDeserializer<T> jsonDeserializer(Class<T> clazz){
 		return new JsonDeserializer<T>(clazz, false);
 	}
 

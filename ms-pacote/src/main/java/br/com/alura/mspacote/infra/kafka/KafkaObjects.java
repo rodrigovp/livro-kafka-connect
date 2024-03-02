@@ -28,6 +28,7 @@ class KafkaObjects {
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServerUrl);
         streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, String().getClass().getName());
         streamsConfiguration.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, "1");
+        streamsConfiguration.put(StreamsConfig.STATE_DIR_CONFIG, "./kafka-streams");
 
         return new KafkaStreamsConfiguration(streamsConfiguration);
     }
