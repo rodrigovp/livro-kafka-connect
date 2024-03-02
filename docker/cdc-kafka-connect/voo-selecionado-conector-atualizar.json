@@ -13,10 +13,14 @@
     "include.schema.changes": "false",
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
     "value.converter.schemas.enable": "false",
-    "transforms": "extractNewDocumentState,extractKey,rename",
+    "transforms": "extractNewDocumentState,createKey,extractKey,rename",
     "transforms.extractNewDocumentState.type": "io.debezium.transforms.ExtractNewRecordState",
+
+    "transforms.createKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+    "transforms.createKey.fields": "cpf",
+
     "transforms.extractKey.type":"org.apache.kafka.connect.transforms.ExtractField$Key",
-    "transforms.extractKey.field":"id",
+    "transforms.extractKey.field":"cpf",
     "decimal.handling.mode": "string",
 
     "transforms.rename.type": "org.apache.kafka.connect.transforms.RegexRouter",

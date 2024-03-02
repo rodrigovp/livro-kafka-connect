@@ -1,0 +1,13 @@
+server.port: 8083
+application.id.config: ms-pacote
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    group_id: ms-pacote
+    auto-offset-reset: earliest
+    
+topico:
+   voos_selecionados.nome: voos.selecionados
+   hospedagens_selecionadas.nome: hospedagens.selecionadas
+   pacotes_criados.nome: pacotes
