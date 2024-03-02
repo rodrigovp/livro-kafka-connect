@@ -1,0 +1,27 @@
+{
+    "name": "hospedagem-conector",
+    "config": {
+        "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+        "database.hostname": "postgres",
+        "database.port": "5432",
+        "database.user": "postgres",
+        "database.password": "abcd1234",
+        "database.dbname": "hospedagens",
+        "table.include.list": "public.hospedagens",
+        "skipped.operations": "u,d,t",
+        "topic.prefix": "ms-hospedagens",
+        "plugin.name": "pgoutput",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter.schemas.enable": "false",
+        "transforms": "extractNewDocumentState,createKey,extractKey,rename",
+        "transforms.extractNewDocumentState.type": "io.debezium.transforms.ExtractNewRecordState",
+        "decimal.handling.mode": "string",
+        "transforms.createKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+        "transforms.createKey.fields": "cnpj",
+        "transforms.extractKey.type":"org.apache.kafka.connect.transforms.ExtractField$Key",
+        "transforms.extractKey.field":"cnpj",
+        "transforms.rename.type": "org.apache.kafka.connect.transforms.RegexRouter",
+        "transforms.rename.regex": ".*",
+        "transforms.rename.replacement": "hospedagens"   
+    }
+}

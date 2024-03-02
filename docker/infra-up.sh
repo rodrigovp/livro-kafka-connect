@@ -24,6 +24,12 @@ criar_atualizar_conectores(){
   ./hospedagem-selecionada-conector.sh  
   echo "\nAtualizando conector da base de hospedagens selecionados do ms-selecao-hospedagens..."
   ./hospedagem-selecionada-conector-atualizar.sh
+  
+  echo "\nInstalando conector da base de hospedagens do ms-selecao-hospedagens..."
+  ./hospedagem-conector.sh
+  echo "\nAtualizando conector da base de hospedagens do ms-selecao-hospedagens..."
+  ./hospedagem-conector-atualizar.sh
+
   cd ..
 }
 

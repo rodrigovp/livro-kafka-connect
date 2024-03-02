@@ -1,0 +1,14 @@
+server.port: 8083
+application.id.config: ms-marketing
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    group_id: ms-marketing
+    auto-offset-reset: earliest
+    
+topico:
+  pacotes_criados.nome: pacotes
+  hospedagens.nome: hospedagens
+  pacotes_por_hospedagem.nome: hospedagens.pacotes
+

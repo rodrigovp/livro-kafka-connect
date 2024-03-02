@@ -108,7 +108,10 @@ services:
               kafka-topics --create --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic voos.selecionados
               kafka-topics --create --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic hospedagens.selecionadas
               kafka-topics --create --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic pacotes
+              kafka-topics --create --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic hospedagens
+              kafka-topics --create --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic hospedagens.pacotes
           
+
               echo -e 'Criados os seguintes topicos com sucesso:'
               kafka-topics --bootstrap-server kafka:29092 --list
         networks:

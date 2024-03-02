@@ -22,8 +22,7 @@ import java.util.Properties;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.common.serialization.Serdes.String;
 import static org.apache.kafka.common.serialization.Serdes.serdeFrom;
-import static org.apache.kafka.streams.StreamsConfig.APPLICATION_ID_CONFIG;
-import static org.apache.kafka.streams.StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG;
+import static org.apache.kafka.streams.StreamsConfig.*;
 import static org.apache.kafka.streams.kstream.Consumed.with;
 
 @Configuration
@@ -89,6 +88,7 @@ class MontadorDePacotesKafkaStreams {
         streamsConfiguration.put(APPLICATION_ID_CONFIG, idDaAplicacao);
         streamsConfiguration.put(BOOTSTRAP_SERVERS_CONFIG, kafkaServerUrl);
         streamsConfiguration.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, String().getClass().getName());
+        streamsConfiguration.put(COMMIT_INTERVAL_MS_CONFIG, "1");
 
         return streamsConfiguration;
     }
