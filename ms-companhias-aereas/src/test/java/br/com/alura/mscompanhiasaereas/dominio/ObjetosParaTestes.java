@@ -3,6 +3,7 @@ package br.com.alura.mscompanhiasaereas.dominio;
 import br.com.alura.mscompanhiasaereas.controller.VooDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.types.ObjectId;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -40,6 +41,11 @@ public class ObjetosParaTestes {
         return new Voo(rioDeJaneiro, beloHorizonte, CompanhiaAerea.AZUL, preco());
     }
 
+    public static final Voo doRioParaBeloHorizonteAmanhaComId(ObjectId id){
+        var voo = doRioParaBeloHorizonteAmanha();
+        setField(voo, "id", id);
+        return voo;
+    }
     public static final Origem origemCongonhasAmanha(){
         return new Origem(CGH, amanha());
     }

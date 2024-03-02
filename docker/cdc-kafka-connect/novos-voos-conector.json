@@ -9,7 +9,7 @@
         "collection.include.list": "livro-kafka.voos",
         "key.converter": "org.apache.kafka.connect.json.JsonConverter",
         "key.converter.schemas.enable": "false",
-        "skipped.operations": "u,d,t",
+        "skipped.operations": "u,t",
         "topic.prefix": "ms-companhias-aereas"
    }
 }

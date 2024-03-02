@@ -4,10 +4,7 @@ import br.com.alura.mscompanhiasaereas.service.VooService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/voos")
@@ -17,14 +14,25 @@ public class VooController {
     private VooService service;
     @PostMapping
     ResponseEntity<String> cadastrarNovoVoo(@RequestBody VooDTO vooDTO){
+        String body;
+        HttpStatus statusCode;
         try{
-            service.cadastrarNovo(vooDTO.toVoo());
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            body = service.cadastrarNovo(vooDTO.toVoo());
+            statusCode = HttpStatus.CREATED;
         }   catch (RuntimeException e){
-            return ResponseEntity
-                    .status(HttpStatus.UNPROCESSABLE_ENTITY)
-                    .body(e.getMessage());
+            body = e.getMessage();
+            statusCode = HttpStatus.UNPROCESSABLE_ENTITY;
         }
+        return ResponseEntity
+                .status(statusCode)
+                .body(body);
+    }
 
+    @DeleteMapping("/{id}")
+    ResponseEntity<String> removerVoo(@PathVariable String id){
+        if(service.removerVoo(id)){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

@@ -39,4 +39,10 @@ class RepositorioDeVoosTest {
         assertThat(mongoTemplate.findAll(Voo.class)).contains(voo);
     }
 
+    @Test
+    void removerVoo(){
+        repositorioDeVoos.deleteById(voo.getId());
+
+        assertThat(mongoTemplate.findAll(Voo.class)).doesNotContain(voo);
+    }
 }

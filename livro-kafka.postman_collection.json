@@ -4,7 +4,7 @@
 		"name": "livro-kafka",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "2004722",
-		"_collection_link": "https://crimson-zodiac-778758.postman.co/workspace/Alura-Bank~e04b7ac4-1ac1-4c12-9151-66aae393d95c/collection/2004722-e15f34ec-2bce-4e54-9672-d6b4f0c9e890?action=share&creator=2004722&source=collection_link"
+		"_collection_link": "https://crimson-zodiac-778758.postman.co/workspace/Alura-Bank~e04b7ac4-1ac1-4c12-9151-66aae393d95c/collection/2004722-e15f34ec-2bce-4e54-9672-d6b4f0c9e890?action=share&source=collection_link&creator=2004722"
 	},
 	"item": [
 		{
@@ -14,7 +14,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"origem\":\"CGH\",\n   \"partida\":\"2023-08-14T18:38:39.072390\",\n   \"destino\":\"SDU\",\n   \"chegada\":\"2023-08-14T19:38:39.072451\",\n   \"companhiaAerea\":\"GOL\"\n}",
+					"raw": "{\n   \"origem\":\"CGH\",\n   \"partida\":\"2024-08-14T18:38:39.072390\",\n   \"destino\":\"SDU\",\n   \"chegada\":\"2024-08-14T20:38:39.072451\",\n   \"companhiaAerea\":\"GOL\",\n   \"precoAdulto\": 1000.00,\n   \"precoCrianca\": 500.00\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -30,6 +30,26 @@
 					"port": "8080",
 					"path": [
 						"voos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/voos/64fc9b032c8ffa0d262f3ac8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"voos",
+						"64fc9b032c8ffa0d262f3ac8"
 					]
 				}
 			},
