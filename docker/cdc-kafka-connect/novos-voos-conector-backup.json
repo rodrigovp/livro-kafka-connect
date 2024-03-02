@@ -1,0 +1,20 @@
+{
+   "name": "novos-voos-conector",
+   "config": {
+        "connector.class": "io.debezium.connector.mongodb.MongoDbConnector",
+        "mongodb.connection.string": "mongodb://mongodb:27017",
+        "mongodb.user": "user",
+        "mongodb.password": "password",
+        "database.include.list": "livro-kafka",
+        "collection.include.list": "livro-kafka.voos",
+        "include.schema.changes": "false",
+        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "key.converter.schemas.enable": "false",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter.schemas.enable": "false",
+        "skipped.operations": "u,d,t",
+        "topic.prefix": "topico",
+        "transforms": "unwrap",
+        "transforms.unwrap.type":"io.debezium.connector.mongodb.transforms.ExtractNewDocumentState"
+   }
+}

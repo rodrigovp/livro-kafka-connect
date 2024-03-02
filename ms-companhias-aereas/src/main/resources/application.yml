@@ -1,0 +1,5 @@
+spring:
+
+  data.mongodb:
+    uri: mongodb://user:password@localhost:27017/livro-kafka
+    database: livro-kafka

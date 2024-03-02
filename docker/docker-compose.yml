@@ -1,0 +1,149 @@
+version: "3.7"
+
+services:
+
+    mongodb:
+        image: mongo:4.2
+        hostname: mongodb
+        container_name: mongodb
+        ports:
+            - 27017:27017
+        environment:
+            MONGO_INITDB_DATABASE: livro-kafka
+            MONGO_INITDB_ROOT_USERNAME: user
+            MONGO_INITDB_ROOT_PASSWORD: password
+        volumes:
+            - ./scripts/init-mongodb.js:/docker-entrypoint-initdb.d/init-mongodb.js:ro
+        command: mongod --replSet rs0 --auth 
+        healthcheck:
+            test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u user -p password --quiet) -eq 1
+            interval: 10s
+            start_period: 30s
+        networks:
+            bubble:
+
+    zookeeper:
+        image: zookeeper:3.5
+        hostname: zookeeper
+        container_name: zookeeper
+        ports:
+            - "2181:2181"
+        environment:
+            ZOO_MY_ID: 1
+            ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181
+            ZOO_4LW_COMMANDS_WHITELIST: mntr,conf,ruok
+        networks:
+            bubble:
+
+    kafka:
+        image: confluentinc/cp-server:7.3.3
+        hostname: kafka
+        container_name: kafka
+        depends_on:
+            - zookeeper
+        ports:
+            - "9092:9092"
+            - "29092:9092"
+        environment:
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+            KAFKA_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+            KAFKA_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+            KAFKA_STATUS_STORAGE_REPLICATION_FACTOR: 1
+            KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
+            
+            KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+        networks:
+            bubble:
+    
+    criador-topicos:
+        image: confluentinc/cp-kafka:7.3.2
+        container_name: criador-topicos
+        depends_on:
+            - kafka
+        restart: on-failure
+        command:
+            - bash
+            - -c
+            - |
+              echo -e 'Aguardando Kafka subir com sucesso...'
+              kafka-topics --bootstrap-server kafka:29092 --list 
+
+              kafka-topics --create --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic ms-companhias-aereas.livro-kafka.voos
+          
+              echo -e 'Criados os seguintes topicos com sucesso:'
+              kafka-topics --bootstrap-server kafka:29092 --list
+        networks:
+            bubble:
+
+    kafka-connect:
+        image: cdc-kafka-connect
+        hostname: kafka-connect
+        container_name: kafka-connect
+        depends_on:
+            - kafka
+            - mongodb
+        ports:
+            - '8083:8083'
+        environment:
+            CONNECT_BOOTSTRAP_SERVERS: kafka:29092
+            CONNECT_GROUP_ID: kafka-connect
+            CONNECT_REST_PORT: 8083
+            CONNECT_REST_ADVERTISED_HOST_NAME: "kafka-connect"
+            CONNECT_CONFIG_STORAGE_TOPIC: _connect-configs
+            CONNECT_OFFSET_STORAGE_TOPIC: _connect-offsets
+            CONNECT_STATUS_STORAGE_TOPIC: _connect-status
+            CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "1"
+            CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "1"
+            CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
+            CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+            CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+            CONNECT_PLUGIN_PATH: /etc/confluent/connect
+        volumes:
+            - $PWD/data:/data
+            - ./secrets/:/etc/confluent/connect/secrets:ro
+    # In the command section, $ are replaced with $$ to avoid the error 'Invalid interpolation format for "command" option'
+        command:
+            - bash
+            - -c
+            - |
+              echo ">>>>>>>> Launching Kafka Connect worker"
+              /etc/confluent/docker/run &
+              #
+              echo "Waiting for Kafka Connect to start listening on $$CONNECT_REST_ADVERTISED_HOST_NAME ⏳"
+              while [ $$(curl -s -o /dev/null -w %{http_code} http://$$CONNECT_REST_ADVERTISED_HOST_NAME:$$CONNECT_REST_PORT/connectors) -ne 200 ] ; do 
+                echo -e $$(date) " Kafka Connect listener HTTP state: " $$(curl -s -o /dev/null -w %{http_code} http://$$CONNECT_REST_ADVERTISED_HOST_NAME:$$CONNECT_REST_PORT/connectors) " (waiting for 200)"
+                sleep 1 
+              done              
+              #
+              sleep infinity
+        networks:
+            bubble:
+
+    redpanda:
+      image: docker.redpanda.com/redpandadata/console:v2.3.0
+      container_name: redpanda
+      ports:
+        - 18080:8080
+      depends_on:
+          - kafka
+          - kafka-connect
+      restart: always
+      entrypoint: /bin/sh
+      command: -c "echo \"$$CONSOLE_CONFIG_FILE\" > /tmp/config.yml; /app/console"
+      environment:
+          CONFIG_FILEPATH: /tmp/config.yml
+          CONSOLE_CONFIG_FILE: |
+            kafka:
+              brokers: ["kafka:29092"]
+      networks:
+          bubble:
+
+networks:
+    bubble:
+        name: bubble
+        driver: bridge
