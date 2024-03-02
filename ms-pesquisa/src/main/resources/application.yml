@@ -1,0 +1,14 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    group_id: ms-pesquisa
+    auto-offset-reset: earliest
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/pesquisa?createDatabaseIfNotExist=true&useSSL=false
+    username: root
+  jpa:
+    hibernate.ddl-auto: update
+    show-sql: true
+
+topico.voos.nome: ms-companhias-aereas.livro-kafka.voos

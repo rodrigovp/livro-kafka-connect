@@ -1,0 +1,17 @@
+{
+   "connector.class": "io.debezium.connector.mongodb.MongoDbConnector",
+   "mongodb.connection.string": "mongodb://mongodb:27017",
+   "mongodb.user": "user",
+   "mongodb.password": "password",
+   "database.include.list": "livro-kafka",
+   "collection.include.list": "livro-kafka.voos",
+   "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+   "key.converter.schemas.enable": "false",
+   "skipped.operations": "u,t",
+   "topic.prefix": "ms-companhias-aereas",
+   "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+   "value.converter.schemas.enable": "false",
+   "transforms": "extractNewDocumentState",
+   "transforms.extractNewDocumentState.type":"io.debezium.connector.mongodb.transforms.ExtractNewDocumentState",
+   "transforms.extractNewDocumentState.drop.tombstones": "false"
+}

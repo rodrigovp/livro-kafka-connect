@@ -22,6 +22,19 @@ services:
         networks:
             bubble:
 
+    mysql:
+        image: mysql:8.0.23
+        hostname: mysql
+        container_name: mysql
+        restart: always
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: pesquisa
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+        networks:
+            bubble:
+
     zookeeper:
         image: zookeeper:3.5
         hostname: zookeeper
