@@ -1,0 +1,12 @@
+server.port: 8082
+
+carga-inicial-banco.enabled: true
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hospedagens
+    username: postgres
+    password: abcd1234
+  jpa:
+    hibernate.ddl-auto: update
+    show-sql: true

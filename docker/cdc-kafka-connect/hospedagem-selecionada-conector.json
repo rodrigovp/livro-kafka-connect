@@ -1,0 +1,15 @@
+{
+    "name": "hospedagem-selecionada-conector",
+    "config": {
+        "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+        "database.hostname": "postgres",
+        "database.port": "5432",
+        "database.user": "postgres",
+        "database.password": "abcd1234",
+        "database.dbname": "hospedagens",
+        "table.include.list": "public.hospedagens_selecionadas",
+        "skipped.operations": "u,d,t",
+        "topic.prefix": "ms-hospedagens",
+        "plugin.name": "pgoutput"
+    }
+}

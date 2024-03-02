@@ -33,6 +33,21 @@ services:
         environment:
             MYSQL_DATABASE: pesquisa
             MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+        
+        networks:
+            bubble:
+
+    postgres:
+        image: postgres:16
+        hostname: postgres
+        container_name: postgres
+        restart: always
+        environment:
+            POSTGRES_DB: hospedagens
+            POSTGRES_PASSWORD: "abcd1234"
+        command: ['postgres', '-c', 'wal_level=logical']
+        ports:
+           - "5432:5432"
         networks:
             bubble:
 
@@ -91,6 +106,7 @@ services:
 
               kafka-topics --create --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic ms-companhias-aereas.livro-kafka.voos
               kafka-topics --create --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic ms-pesquisa.pesquisa.voos_selecionados
+              kafka-topics --create --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic ms-hospedagens.public.hospedagens_selecionadas
           
               echo -e 'Criados os seguintes topicos com sucesso:'
               kafka-topics --bootstrap-server kafka:29092 --list
@@ -106,6 +122,7 @@ services:
             - kafka
             - mongodb
             - mysql
+            - postgres
         ports:
             - '8083:8083'
         environment:

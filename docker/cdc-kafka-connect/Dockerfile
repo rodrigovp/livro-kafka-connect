@@ -11,6 +11,10 @@ RUN echo ">>>>>>>>>> Instalando Plugin do mysql <<<<<<<<<<"
 RUN wget  https://repo1.maven.org/maven2/io/debezium/debezium-connector-mysql/2.4.0.Final/debezium-connector-mysql-2.4.0.Final-plugin.tar.gz
 RUN tar xvfz debezium-connector-mysql-2.4.0.Final-plugin.tar.gz --directory $KAFKA_CONNECT_PLUGINS_DIR
 
+RUN echo ">>>>>>>>>> Instalando Plugin do postgres <<<<<<<<<<"
+RUN wget  https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/2.4.0.Final/debezium-connector-postgres-2.4.0.Final-plugin.tar.gz
+RUN tar xvfz debezium-connector-postgres-2.4.0.Final-plugin.tar.gz --directory $KAFKA_CONNECT_PLUGINS_DIR
+
 RUN echo ">>>>>>>>>> Instalando Bibliotecas de SMT <<<<<<<<<<"
 RUN wget https://repo1.maven.org/maven2/io/debezium/debezium-scripting/2.4.0.Final/debezium-scripting-2.4.0.Final.tar.gz
 RUN tar xvfz debezium-scripting-2.4.0.Final.tar.gz --directory $KAFKA_CONNECT_PLUGINS_DIR

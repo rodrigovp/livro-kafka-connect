@@ -20,6 +20,10 @@ criar_atualizar_conectores(){
   echo "\nAtualizando conector da base de voos selecionados do ms-pesquisa..."
   ./voo-selecionado-conector-atualizar.sh
 
+  echo "\nInstalando conector da base de hospedagens selecionadas do ms-selecao-hospedagens..."
+  ./hospedagem-selecionada-conector.sh  
+  echo "\nAtualizando conector da base de hospedagens selecionados do ms-selecao-hospedagens..."
+  ./hospedagem-selecionada-conector-atualizar.sh
   cd ..
 }
 

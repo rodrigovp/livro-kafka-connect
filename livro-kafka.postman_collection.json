@@ -84,6 +84,49 @@
 				"url": "http://localhost:8081/voos-selecionados"
 			},
 			"response": []
+		},
+		{
+			"name": "ms-selecao-hospedagens: listar hospedagens",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/hospedagens?nome_destino=SDU",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"hospedagens"
+					],
+					"query": [
+						{
+							"key": "nome_destino",
+							"value": "SDU"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ms-selecao-hospedagens: selecionar hospedagem",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cnpj\": \"42477223000194\",\n    \"idCompanhiaAerea\": \"65136e3571e71b6bcc8b3028\",\n    \"cpf\": \"35433320316\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8082/hospedagens-selecionadas"
+			},
+			"response": []
 		}
 	]
 }
