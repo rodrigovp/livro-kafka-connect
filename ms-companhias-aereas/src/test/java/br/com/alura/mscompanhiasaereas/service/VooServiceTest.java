@@ -1,6 +1,7 @@
 package br.com.alura.mscompanhiasaereas.service;
 
 import br.com.alura.mscompanhiasaereas.dominio.RepositorioDeVoos;
+import br.com.alura.mscompanhiasaereas.relatorio.RepositorioDeOrigensParaRelatorio;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static br.com.alura.mscompanhiasaereas.dominio.ObjetosParaTestes.doRioParaBeloHorizonteAmanha;
 import static br.com.alura.mscompanhiasaereas.dominio.ObjetosParaTestes.doRioParaBeloHorizonteAmanhaComId;
+import static br.com.alura.mscompanhiasaereas.relatorio.OrigemParaRelatorio.origemDoVoo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -17,6 +19,9 @@ import static org.mockito.Mockito.*;
 class VooServiceTest {
     @Mock
     private RepositorioDeVoos repositorioDeVoos;
+
+    @Mock
+    private RepositorioDeOrigensParaRelatorio repositorioDeOrigensParaRelatorio;
 
     @InjectMocks
     private VooService vooService;
@@ -28,6 +33,7 @@ class VooServiceTest {
         when(repositorioDeVoos.save(voo)).thenReturn(doRioParaBeloHorizonteAmanhaComId(idDoVoo));
 
         assertThat(vooService.cadastrarNovo(voo)).isEqualTo(idDoVoo.toHexString());
+        verify(repositorioDeOrigensParaRelatorio).save(origemDoVoo(voo));
     }
 
     @Test

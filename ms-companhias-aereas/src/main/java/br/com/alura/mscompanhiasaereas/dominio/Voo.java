@@ -27,4 +27,8 @@ public class Voo {
         this.companhiaAerea = companhiaAerea;
         this.preco = preco;
     }
+
+    public Origem deOrigem() {
+        return origem;
+    }
 }

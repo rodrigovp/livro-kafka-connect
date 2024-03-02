@@ -34,8 +34,6 @@ class RepositorioDeVoosTest {
 
     @Test
     void cadastrarUmVoo() {
-        mongoTemplate.findAll(Voo.class);
-
         assertThat(mongoTemplate.findAll(Voo.class)).contains(voo);
     }
 

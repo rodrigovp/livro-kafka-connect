@@ -8,3 +8,4 @@ db.createUser(
 	}
 );
 db.createCollection('voos');
+db.createCollection('origens_relatorio');
