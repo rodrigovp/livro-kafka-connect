@@ -1,6 +1,6 @@
 # Livro de Kafka Connect e Kafka Streams
 
-Este é o repositório de código usado pelo livro de Kafka Connect e Kafka Streams, escrito por mim.
+Este é o repositório de código usado pelo livro de Kafka Connect e Kafka Streams, escrito por mim pela editora Casa do Código.
 
 Caso queira adquiri-lo, basta clicar em um dos links abaixo:
 
